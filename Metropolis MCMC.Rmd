@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #8"
+title: "Metropolis MCMC Problems"
 author: "Shaun Radgowski"
 date: "November 8, 2020"
 urlcolor: blue
