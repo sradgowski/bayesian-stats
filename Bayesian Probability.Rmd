@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #2"
+title: "Bayesian Probability Problems"
 author: "Shaun Radgowski"
 date: "September 19, 2020"
 urlcolor: blue
