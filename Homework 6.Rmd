@@ -1,0 +1,240 @@
+---
+title: "S&DS 238 Problem Set #6"
+author: "Shaun Radgowski"
+date: "October 23, 2020"
+urlcolor: blue
+output:
+  pdf_document: default 
+  word_document: default
+  html_document:
+   toc: yes
+   toc_float:
+     collapsed: no
+---
+
+# Problem 1
+
+## (1a)
+
+For both $T_1$ and $T_2$, the pdf is 0 for $t \leq 0$, and for $t > 0$:
+$$
+f_{T_1}(t) = f_{T_2}(t) = e^{-t}I\{t > 0\}
+$$
+
+And the density function for the sum at $s \leq 0$ is 0, and at $s > 0$:
+\begin{center} $ f_S(s) = \int_{-\infty}^{\infty} f_{T_1}(t)f_{T_2}(s-t) dt = \int_{0}^{\infty} e^{-t}I\{t > 0\}e^{t-s}I\{s - t> 0\} dt $ \end{center}
+\begin{center} $ = \int_{0}^{s} e^{-t} e^{-(s-t)} = \int_{0}^{s} e^{-s} = se^{-s} $ \end{center}
+
+This is clearly using the memoryless property because the probability of seeing meteors is immaterial of the starting time or how many meteors have already been seen (there's no *t* in the equation).
+
+## (1b)
+
+If we define the random variable $X = Exp(\lambda)$, we know from the problem description:
+\begin{center} $ E(X) = \int_{0}^{\infty} t\lambda e^{-\lambda t}dt = \frac{1}{\lambda} $ \end{center}
+
+Similarly, we can use integration by parts twice to calculate:
+\begin{center} $ E(X^2) = \int_{0}^{\infty}t^2 \lambda e^{-\lambda t} dt = \lambda [-t^2\frac{e^{-\lambda t}}{\lambda} + \int_{0}^{\infty} 2t \frac{e^{-\lambda t}}{\lambda}] $ \end{center}
+\begin{center} $ = \lambda [-t^2\frac{e^{-\lambda t}}{\lambda} + \frac{2}{\lambda} \int_{0}^{\infty} t e^{-\lambda t}]  = \lambda [-t^2\frac{e^{-\lambda t}}{\lambda} - \frac{2}{\lambda} (-t\frac{e^{-\lambda t}}{\lambda} - \int_{0}^{\infty} e^{-\lambda t}) ]$ \end{center}
+\begin{center} $ = \lambda [-t^2\frac{e^{-\lambda t}}{\lambda} - \frac{2}{\lambda} (-t\frac{e^{-\lambda t}}{\lambda} + \frac{e^{-\lambda t}}{\lambda}) ] = -t^2 e^{-\lambda t} - \frac{2}{\lambda}te^{-\lambda t} - \frac{2}{\lambda ^2}te^{-\lambda t}  $ \end{center}
+\begin{center} $ = -\frac{e^{-\lambda t}}{\lambda ^2}(\lambda ^2 t + 2\lambda t + 2)|_0 ^{\infty} = \frac{2}{\lambda ^2} $ \end{center}
+
+Finally, using the definition of variance as $E(X^2) - E(X)^2$, we can say that the variance is equal to:
+\begin{center} $ \frac{2}{\lambda ^2} - (\frac{1}{\lambda})^2 = \frac{1}{\lambda ^2}$ \end{center}
+
+## (1c)
+
+For *n* independent and identically distributed selections from a distribution each with mean $\frac{1}{\lambda}$ and variance $\frac{1}{\lambda ^2}$, the Central Limit Theorem tells us that their sum $S_n = T_1 + T_2 + ... + T_n$ approximately has the Normal distribution $N(n\mu, n\sigma^2) = N(\frac{n}{\lambda}, \frac{n}{\lambda ^2})$. In this case, where *n* is 100:
+\begin{center} $ S_{100} \approx N(100, 100),  $ \end{center}
+
+The 90th Percentile of a Normal Distribution corresponds to a Z-score of approximately 1.282. Thus, using the definition of the Z-score, we know that the 90th percentile of this observed distribution is (in minutes) approximately:
+\begin{center} $ Z\sigma + \mu = 1.282(10) + 100 = 112.82 $ \end{center}
+
+## (1d)
+
+6900 pennies at 1 penny per second equates to 115 minutes. Using the same approximation as above (as derived from the CLT), we can say that the probability of seeing at least 100 meteors in 115 minutes is:
+
+\begin{center} $ P\{S_{100} \leq 115\} \approx P\{N(100, 100) \leq 115\} = P\{N(0, 1) \leq \frac{115 - 100}{\sqrt{100}}\} = \Phi(1.5) \approx 0.933$ \end{center}
+
+```{r}
+pnorm(115, mean=100, sd=10)
+```
+
+
+# Problem 2
+
+## (2a)
+
+In order for the sum of the two scores (which we'll call *S*) to be at least 6, we can add up the following probabilities:
+\begin{center} $ P\{S = 6\} = f_{X_1}(3)f_{X_2}(3) + f_{X_1}(2)f_{X_2}(4) + f_{X_1}(4)f_{X_2}(2) $ \end{center}
+\begin{center} $ +f_{X_1}(1)f_{X_2}(5) + f_{X_1}(5)f_{X_2}(1) = 0.04 + 0.04 + 0.04 + 0.03 + 0.03 = 0.18$ \end{center}
+\begin{center} $ P\{S = 7\} = f_{X_1}(3)f_{X_2}(4) + f_{X_1}(4)f_{X_2}(3) + f_{X_1}(5)f_{X_2}(2) $ \end{center}
+\begin{center} $ +f_{X_1}(2)f_{X_2}(5) = 0.04 + 0.04 + 0.02 + 0.02 = 0.12 $ \end{center}
+\begin{center} $ P\{S = 8\} = f_{X_1}(4)f_{X_2}(4) + f_{X_1}(5)f_{X_2}(3) + f_{X_1}(3)f_{X_2}(5) $ \end{center}
+\begin{center} $ = 0.04 +0.02 + 0.02 = 0.08$ \end{center}
+\begin{center} $ P\{S = 9\} = f_{X_1}(4)f_{X_2}(5) + f_{X_1}(5)f_{X_2}(4) = 0.02 + 0.02 = 0.04 $ \end{center}
+\begin{center} $ P\{S = 10\} = f_{X_1}(5)f_{X_2}(5) = 0.01 $ \end{center}
+
+Thus, the total probability that the sum of the two scores is at least 6 is:
+$$
+P\{S \geq 6\} = 0.18 + 0.12 + 0.08 + 0.04 + 0.01 = 0.43
+$$
+
+## (2b)
+
+```{r}
+f <- c(0, 0.3, 0.2, 0.2, 0.2, 0.1)
+names(f) <- 0:5
+conv <- function(f, g, zapsmall=TRUE){
+  ans <- convolve(f, rev(g), type="open")
+  if (zapsmall) ans <- zapsmall(ans)
+  names (ans) <- 0:(length(ans) - 1)
+  return (ans)
+}
+
+# Number of Students
+n = 10
+f2 <- conv(f, f)
+for (i in 1:(n-2)) {
+  f2 <- conv(f, f2)
+}
+
+# 1st entry is 0, 31st entry is 30
+sum(f2[31:length(f2)])
+```
+
+
+## (2c)
+
+The mean, or the expectation value, is simply the sum of each possible total sum of scores times the probability of that sum.
+The variance is equivalent to the sum of $(x-\mu)^2 P(x)$.
+
+```{r}
+expectation_value <- sum((0:(length(f2) - 1)) * f2)
+variance <- sum(((0:(length(f2) - 1)) - expectation_value)^2 * f2)
+expectation_value
+variance
+
+```
+
+
+With these values as $\mu _{10}$ and $\sigma ^2_{10}$, we can do a normal approximation by defining the random variable X with a $N(\mu _{10}, \sigma ^2_{10})$ distribution and then calculating the probability that $P\{X \geq 30.0\}$. This is equivalent to $1 - P\{X < 30.0\}$, and we can find this in R:
+
+```{r}
+1 - pnorm(30.0, mean=expectation_value, sd=sqrt(variance))
+```
+
+We could do the same thing using a Normal table, by noting that $1 - P\{N(\mu _{10}, \sigma^2_{10}) < 30.0\}$ is the same as $1 - P\{N(0, 1) < \frac{30.0-\mu _{10}}{\sigma_{10}}\}$. The right side of that inequality comes out to 0.93. Doing this on paper by looking up the value 0.93 in a Normal table gave me the same result.
+
+## (2d)
+
+As the image shows, just calculating the probability that $P\{X \geq 30.0\}$ starts halfway through the vertical bar around 30, and misses some extra area that would add to the probability. The curve is to the left of the edges, the current approximation is underestimating the probability. 
+
+Updating the approximation to calculate instead the probability $P\{X \geq 29.5\}$, we can see an improvement on the approximation in part (c):
+
+```{r}
+1 - pnorm(29.5, mean=expectation_value, sd=sqrt(variance))
+```
+
+This value of 0.207 is much closer to the actual probability of 0.208 than 0.176. This shows that the Continuity Correction does actually lead to a better approximation of the probability in situations like this.
+
+
+# Problem 3
+
+## (3a)
+
+Given the definitions of the Gamma distribution and the parameters in the problem, we know that:
+\begin{center} $ \mu = \frac{\alpha}{\beta} = 7.5, \ \ \sigma^2 = \frac{\alpha}{\beta ^2} = 3.4^2 = 11.56 $ \end{center}
+\begin{center} $ \beta = \frac{7.5}{11.56} = 0.649, \ \ \alpha =(7.5)(0.649) = 4.866 $ \end{center}
+
+Through the PDF for the Gamma distribution, we can then say that:
+\begin{center} $ b(t) = \frac{\beta ^\alpha}{\Gamma (\alpha)} t^{\alpha - 1} e^{-\beta t}$ \end{center}
+
+By plugging in the relationship of $\lambda (t) = b(t) e^{rt}$ into the $R_0$ formula, we get:
+
+\begin{center} $ R_0 = \int_0 ^{\infty} \lambda (t) dt = \int_0 ^{\infty} \frac{\beta^\alpha}{\Gamma(\alpha)}t^{\alpha-1}e^{-\beta t}e^{rt} dt $ \end{center}
+\begin{center} $ = \int_0 ^{\infty} \frac{\beta^\alpha}{\Gamma(\alpha)}t^{\alpha-1}e^{-(\beta -r)t} dt = \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0 ^{\infty} t^{\alpha-1}e^{-(\beta -r)t} dt $ \end{center}
+
+We know from the fact that $\frac{\beta ^\alpha}{\Gamma (\alpha)} t^{\alpha - 1} e^{-\beta t}$ is a probability density function that its integral for $t > 0$ must equal 1. In order for that to be true, it must be that:
+\begin{center} $ \int_0^{\infty} t^{\alpha - 1} e^{-\beta t} dt = \frac{\Gamma(\alpha)}{\beta^\alpha} $ \end{center}
+
+In this case, we can use that principle to state:
+\begin{center} $ R_0 = \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0 ^{\infty} t^{\alpha-1}e^{-(\beta -r)t} dt =  \frac{\beta^\alpha}{\Gamma(\alpha)} \frac{\Gamma(\alpha)}{(\beta - r)^\alpha} = (\frac{\beta}{\beta - r})^\alpha $ \end{center}
+\begin{center} $ = (\frac{0.649}{0.646-0.1})^{4.866} = 1.182^{4.866} = 2.26$ \end{center}
+
+\newpage
+## (3b)
+
+```{r}
+b <- 7.5/(3.4^2)
+a <- 7.5*b
+r <- 0.1
+t <- seq(0, 40, by=0.2)
+lambda <- dgamma(t, shape = a, scale = b) * exp(0.1*t)
+plot(t, lambda)
+```
+
+
+To find the maximum value of this function, we can set the derivative with respect to *t* equal to 0:
+\begin{center} $ \frac{d}{dt} (\frac{\beta^\alpha}{\Gamma(\alpha)}t^{\alpha-1}e^{-\beta t}e^{rt} ) = \frac{\beta^\alpha}{\Gamma(\alpha)} \frac{d}{dt} (t^{\alpha-1}e^{-(\beta - r) t}) $ \end{center}
+\begin{center} $ = \frac{\beta^\alpha}{\Gamma(\alpha)} [(\alpha - 1)t^{\alpha -2} e^{-(\beta - r) t} -(\beta - r)t^{\alpha - 1}e^{-(\beta - r)t}] = 0$ \end{center}
+\begin{center} $ (\alpha - 1)t^{\alpha - 2} = (\beta - r)t^{\alpha - 1}, \ \ t = \frac{\alpha - 1}{\beta - r} = \frac{4.866-1}{0.649-0.1} \approx 7.04$ \end{center}
+
+We know that this is the maximum value because the second derivative with respect to *t* is negative:
+\begin{center} $ \frac{\beta^\alpha}{\Gamma(\alpha)} \frac{d}{dt} [(\alpha - 1)t^{\alpha -2} e^{-(\beta - r) t} -(\beta - r)t^{\alpha - 1}e^{-(\beta - r)t}] $ \end{center}
+\begin{center} $ = \frac{\beta^\alpha}{\Gamma(\alpha)} t^{\alpha - 3} e^{-(\beta - r)t}(\alpha^2 - \alpha (2\beta t + 3) + \beta t(\beta t + 2) + 2) $ \end{center}
+
+Evaluating this (where $t = 7.04$), the express inside the brackets comes out to -3.092, and because the coefficient is also positive, the double derivative is negative. This means that $t = 7.04$ is a maximum value.
+
+
+## (3c)
+
+\begin{center} $ b(t) = e^{-rt}\lambda(t) = R_0 e^{-rt} f(t) =  \frac{\beta^\alpha}{\Gamma(\alpha)}t^{\alpha-1}e^{-\beta t}$ \end{center}
+\begin{center} $ f(t) = \frac{\beta^\alpha}{\Gamma(\alpha) R_0}t^{\alpha-1}e^{-\beta t}e^{rt}= \frac{\beta^\alpha}{\Gamma(\alpha) R_0}t^{\alpha-1}e^{-(\beta -r)t}$ \end{center}
+
+This is equivalent to the Gamma pdf we saw earlier, just multiplied by a scaling factor of $\frac{1}{R_0} = \frac{1}{2.26} = 0.44$. The parameters are still $a = \alpha = 4.866, \ \ b = \beta - r = 0.547$.
+
+## (3d)
+
+### (i)
+```{r}
+2.26 * pgamma(4, shape = a, rate = b - r)
+```
+
+### (ii)
+```{r}
+2.26 - (2.26* pgamma(14, shape = a, rate = b - r))
+```
+
+### (iii)
+```{r}
+2.26 * (pgamma(14, shape = a, rate = b - r) - pgamma(4, shape = a, rate = b - r))
+```
+
+
+# Problem 4
+
+If both Katie and Pele choose to move along AB (which I'll call event $X_1$), then they will meet at the midpoint of the edge ($T = \frac{1}{2}$). But, this only happens with 1 out of 9 probability. If they both pick edges leading to the same vertex (eg. Katie AD/Pele BD or Katie AC/Pele BC—I'll call this event $X_2$), then $T = 1$ with probability $\frac{2}{9}$. If they don't meet at either of these two times (Event $X_3$), then the symmetry of the situation shows that conditional expectation would be the same as when they began plus 1 for the already-elapsed time. The probability of this situation ($X_3$) is 1 - the combined probabilities of the other situations, or $1 - \frac{1}{3} = \frac{2}{3}$ Using the Law of Total Expectation:
+
+\begin{center} $ E(T) = E(T|X_1)P\{X_1\} + E(T|X_2)P\{X_2\} + E(T|X_3)P\{X_3\}$ \end{center}
+\begin{center} $ = \frac{1}{2}\frac{1}{9} + 1\frac{2}{9} + (1 + E(T))\frac{2}{3} = \frac{5}{18} + \frac{2}{3} + \frac{2}{3}E(T) $ \end{center}
+\begin{center} $ \frac{1}{3}E(T) = \frac{17}{18}, \ \ E(T) = \frac{51}{18} = 2.8\bar{3}$ \end{center}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
