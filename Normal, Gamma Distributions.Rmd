@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #6"
+title: "Normal and Gamma Distributions Problems"
 author: "Shaun Radgowski"
 date: "October 23, 2020"
 urlcolor: blue
