@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #4"
+title: "Continuous Distributions Problems"
 author: "Shaun Radgowski"
 date: "October 2, 2020"
 urlcolor: blue
