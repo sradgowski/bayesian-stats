@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #5"
+title: "Expectation, Chebyshev, Poisson Questions"
 author: "Shaun Radgowski"
 date: "October 16, 2020"
 urlcolor: blue
