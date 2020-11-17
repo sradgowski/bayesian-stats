@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #1"
+title: "Basic Probability Problems"
 author: "Shaun Radgowski"
 date: "September 11, 2020"
 urlcolor: blue
