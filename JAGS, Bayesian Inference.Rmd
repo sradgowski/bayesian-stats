@@ -1,5 +1,5 @@
 ---
-title: "S&DS 238 Problem Set #9"
+title: "JAGS and Bayesian Inference Problems"
 author: "Shaun Radgowski"
 date: "November 14, 2020"
 urlcolor: blue
